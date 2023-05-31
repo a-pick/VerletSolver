@@ -12,7 +12,7 @@ Built to further my understanding of C# and graphics libraries (in this case, Ra
 
 # Technologies Used
 
-- C#: The project is developed using the C# programming language using Visual Studio 2022 Community.
+- C#: The project is developed using the C# programming language with Visual Studio 2022 Community.
 - Raylib: The Raylib library is utilized for graphics and window management.
 
 # License
