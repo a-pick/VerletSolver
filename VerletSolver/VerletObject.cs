@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using Raylib_cs;
+using System.Numerics;
 
 namespace VerletSolver
 {
@@ -7,11 +8,13 @@ namespace VerletSolver
         public Vector2 currentPosition;
         public Vector2 oldPosition;
         public Vector2 acceleration;
+        public Color particleColor;
+        public Vector2 velocity;
 
         public void UpdatePosition(float dt)
         {
             // Get the velocity vector
-            Vector2 velocity = currentPosition - oldPosition;
+            velocity = currentPosition - oldPosition;
 
             // Save the current position
             oldPosition = currentPosition;

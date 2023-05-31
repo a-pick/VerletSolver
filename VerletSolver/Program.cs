@@ -7,6 +7,8 @@ struct ProgramSettings {
     public int ScaleFactor;
     public Color ParticleColor;
     public int ParticleSize;
+    public Color BackgroundColor;
+    public int PhysicsSubsteps;
 }
 
 namespace VerletSolver
@@ -31,7 +33,9 @@ namespace VerletSolver
             settings.WindowTitle = "Verlet Solver";
             settings.ScaleFactor = 1;
             settings.ParticleColor = Color.RAYWHITE;
-            settings.ParticleSize = 20;
+            settings.ParticleSize = 5;
+            settings.BackgroundColor = Color.DARKGRAY;
+            settings.PhysicsSubsteps = 4;
 
             // Create the object manager
             ObjectManager manager = new();
@@ -40,22 +44,20 @@ namespace VerletSolver
             Solver solver = new(settings, manager);
 
             // Spawn some objects
-            solver.SpawnObjects(100);
-            
+            solver.SpewObjects(1000);
 
             Raylib.InitWindow((int)(settings.WindowWidth * settings.ScaleFactor), (int)(settings.WindowHeight * settings.ScaleFactor), settings.WindowTitle);
             Raylib.SetTargetFPS(144);
 
-
             // The game loop
-            while (!Raylib.WindowShouldClose())
+            while (true)
             {
                 // Set the time delta
                 float dt = Raylib.GetFrameTime();
                 solver.Update(dt);
 
                 Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.BLACK);
+                Raylib.ClearBackground(settings.BackgroundColor);
 
                 // Draw the particles
                 foreach (VerletObject obj in manager.verletObjects)
@@ -63,11 +65,15 @@ namespace VerletSolver
                     if (obj != null)
                     {
                         (int sX, int sY) = GetScaledCoordinates((int)obj.currentPosition.X, (int)obj.currentPosition.Y, settings);
-                        Raylib.DrawRectangle(sX, sY, settings.ParticleSize*settings.ScaleFactor, settings.ParticleSize * settings.ScaleFactor, settings.ParticleColor);
+                        Raylib.DrawCircle(sX, sY, settings.ParticleSize*settings.ScaleFactor, obj.particleColor);
                     }
                 }
 
                 Raylib.EndDrawing();
+
+                // If the user attempts to close the window, close it
+                if (Raylib.WindowShouldClose())
+                    break;
             }
 
             Raylib.CloseWindow();
